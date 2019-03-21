@@ -12,6 +12,17 @@ let userQuery = process.argv.slice(3).join(" ");
 const newLog = "-------------------------------------\n";
 
 
+// Method for creating new header that is used when logging entries in log.txt
+// ---------------------------------
+const newHeader = function(media) {
+    return [
+        `${ newLog }`,
+            `   ~     ~     ~     ~\n`,
+            `Upcoming shows for ${ media }\n`,
+            `~     ~     ~     ~`
+    ].join("");
+}
+
 // Method for logging text in log.txt file
 // ---------------------------------
 let logText = function(text) {
@@ -28,15 +39,9 @@ const concertThis = function(userQuery) {
     .then(function(response) {
         let concertDate = "";
         let concert = [];
-        const newArtistLog = [
-            `${ newLog }`,
-            `   ~     ~     ~     ~\n`,
-            `Upcoming shows for ${ userQuery }\n`,
-            `~     ~     ~     ~`
-        ].join("");
 
-        logText(newArtistLog);
-        console.log(newArtistLog);
+        logText(newHeader(userQuery));
+        console.log(newHeader(userQuery));
 
         for (let i = 0; i < response.data.length; i++) {
             concertDate = moment(response.data[i].datetime).format("MM/DD/YYYY");
@@ -71,15 +76,8 @@ spotify.search({ type: 'track', query: userQuery, limit: 1 }, function(err, data
         return console.log('Error occurred: ' + err);
     }
        
-    const newSongLog = [
-        `${ newLog }`,
-        `   ~     ~     ~     ~\n`,
-        `Song information for '${ userQuery }'\n`,
-        `~     ~     ~     ~`
-    ].join("");
-
-    logText(newSongLog);
-    console.log(newSongLog);
+    logText(newHeader(userQuery));
+    console.log(newHeader(userQuery));
 
     const songName = data.tracks.items[0].name;
     const songArtists = data.tracks.items[0].album.artists[0].name;
@@ -113,15 +111,8 @@ const movieThis = function(userQuery) {
     axios.get(`http://www.omdbapi.com/?t=${ userQuery }&y=&plot=short&apikey=${ keys.OMDB_KEY }`).then(
         function(response) {
 
-            const newMovieLog = [
-                `${ newLog }`,
-                `   ~     ~     ~     ~\n`,
-                `Song information for '${ userQuery }'\n`,
-                `~     ~     ~     ~`
-            ].join("");
-
-            logText(newMovieLog);
-            console.log(newMovieLog);
+            logText(newHeader(userQuery));
+            console.log(newHeader(userQuery));
 
             const movieTitle = response.data.Title;
             const movieYear = response.data.Year;
@@ -170,7 +161,7 @@ const doWhatItSays = function() {
             return console.log(err);
         }
         // Read file and turn data into an array
-        let dataArr = data.split(",");
+        const dataArr = data.split(",");
 
         // Slice dataArr and turn second half into string
         let str = dataArr.slice(1).join("");
