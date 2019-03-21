@@ -18,7 +18,7 @@ const newHeader = function(media) {
     return [
         `${ newLog }`,
             `   ~     ~     ~     ~\n`,
-            `Upcoming shows for ${ media }\n`,
+            `Information for ${ media }\n`,
             `~     ~     ~     ~`
     ].join("");
 }
@@ -180,12 +180,21 @@ const doWhatItSays = function() {
 const switchCase = function(userInput) {
     switch(userInput) {
         case `concert-this`:
+            if (!userQuery) {
+                userQuery = "Flume";
+            }
             concertThis(userQuery);
             break;
         case `spotify-this-song`:
+            if (!userQuery) {
+                userQuery = "Ace of Base";
+            }
             spotifyThisSong(userQuery);
             break;
         case `movie-this`:
+            if (!userQuery) {
+                userQuery = "Mr. Nobody";
+            }
             movieThis(userQuery);
             break;
         case `do-what-it-says`:
